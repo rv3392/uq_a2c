@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"uq_a2c/coursescraper"
+	calendar "uq_a2c/cal"
+	coursescraper "uq_a2c/coursescraper"
 )
 
 func main() {
@@ -14,5 +15,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error: Incorrect number of arguments")
 	}
 
-	assessments := coursescraper.ScrapeAssessments(args[0])
+	courseCode := args[0]
+
+	assessments := coursescraper.ScrapeAssessments(courseCode)
+	assessmentCal := calendar.CreateAssessmentsCal(assessments)
+	calendar.Save(courseCode+".ics", *assessmentCal)
 }
