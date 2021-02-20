@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"uq_a2c/coursescraper"
 )
 
 func main() {
@@ -11,4 +13,6 @@ func main() {
 	if len(args) != 1 {
 		fmt.Fprintf(os.Stderr, "Error: Incorrect number of arguments")
 	}
+
+	assessments := coursescraper.ScrapeAssessments(args[0])
 }
