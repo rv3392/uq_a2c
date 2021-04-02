@@ -8,6 +8,8 @@ import (
 	coursescraper "uq_a2c/coursescraper"
 )
 
+const currentSemester = "Semester 1, 2021"
+
 func main() {
 	args := os.Args[1:]
 
@@ -17,7 +19,7 @@ func main() {
 
 	courseCode := args[0]
 
-	assessments := coursescraper.ScrapeAssessments(courseCode)
+	assessments := coursescraper.ScrapeAssessments(courseCode, currentSemester, "St Lucia", "Flexible Delivery")
 	assessmentCal := calendar.CreateAssessmentsCal(assessments)
 	calendar.Save(courseCode+".ics", *assessmentCal)
 }
