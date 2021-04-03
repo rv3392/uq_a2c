@@ -21,5 +21,5 @@ func main() {
 
 	assessments := coursescraper.ScrapeAssessments(courseCode, currentSemester, "St Lucia", "Flexible Delivery")
 	assessmentCal := calendar.CreateAssessmentsCal(assessments)
-	calendar.Save(courseCode+".ics", *assessmentCal)
+	calendar.Save(courseCode+".ics", assessmentCal)
 }

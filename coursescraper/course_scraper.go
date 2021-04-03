@@ -15,11 +15,11 @@ const courseOfferingsPage = "https://my.uq.edu.au/programs-courses/course.html?c
 
 // Assessment represents a single Assessment and all associated data.
 type Assessment struct {
-	name        string
-	format      string
-	dueDate     string
-	weight      string
-	description string
+	Name        string
+	Format      string
+	DueDate     string
+	Weight      string
+	Description string
 }
 
 type parameterMap map[string]string
@@ -29,15 +29,15 @@ func parameterMapToAssessment(parameterValuePairs parameterMap) Assessment {
 	for parameter, value := range parameterValuePairs {
 		switch parameter {
 		case "name":
-			a.name = value
+			a.Name = value
 		case "type":
-			a.format = value
+			a.Format = value
 		case "due_date":
-			a.dueDate = value
+			a.DueDate = value
 		case "weight":
-			a.weight = value
+			a.Weight = value
 		case "task_description":
-			a.description = value
+			a.Description = value
 		default:
 			fmt.Fprintf(os.Stderr, "Warning: Found an invalid parameter while parsing an assessment: "+parameter+"\n")
 		}
@@ -99,8 +99,8 @@ func getAssessments(assessmentSectionURL string) []Assessment {
 	fmt.Fprintf(os.Stderr, "\n\033[1mFound the following assessments: \033[0m\n")
 	for _, assessment := range assessments {
 		fmt.Printf("Task: %s\nType: %s\nDate: %s\nDescription: %s\n\n",
-			assessment.name, assessment.format, assessment.dueDate,
-			assessment.description)
+			assessment.Name, assessment.Format, assessment.DueDate,
+			assessment.Description)
 	}
 
 	return assessments

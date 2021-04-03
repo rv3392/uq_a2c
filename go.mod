@@ -4,6 +4,6 @@ go 1.16
 
 require (
 	github.com/PuerkitoBio/goquery v1.6.1 // indirect
-	github.com/arran4/golang-ical v0.0.0-20210113030058-c451667b5431 // indirect
 	github.com/gocolly/colly/v2 v2.1.0
+	github.com/jordic/goics v0.0.0-20181215212140-feb996c8e01f // indirect
 )
