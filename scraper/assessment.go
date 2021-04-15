@@ -1,6 +1,6 @@
-// Package coursescraper provides methods to scrape course profiles and return
+// Package scraper provides methods to scrape course profiles and return
 // data.
-package coursescraper
+package scraper
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
 
-	"uq_a2c/coursescraper/date"
+	"uq_a2c/scraper/date"
 )
 
 const courseOfferingsPage = "https://my.uq.edu.au/programs-courses/course.html?course_code="
