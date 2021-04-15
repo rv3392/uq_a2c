@@ -9,6 +9,8 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
+
+	"uq_a2c/coursescraper/date"
 )
 
 const courseOfferingsPage = "https://my.uq.edu.au/programs-courses/course.html?course_code="
@@ -17,7 +19,7 @@ const courseOfferingsPage = "https://my.uq.edu.au/programs-courses/course.html?c
 type Assessment struct {
 	name        string
 	format      string
-	dueDate     string
+	dueDate     *date.AssessmentDate
 	weight      string
 	description string
 }
@@ -33,7 +35,7 @@ func parameterMapToAssessment(parameterValuePairs parameterMap) Assessment {
 		case "type":
 			a.format = value
 		case "due_date":
-			a.dueDate = value
+			a.dueDate = date.ParseString(value)
 		case "weight":
 			a.weight = value
 		case "task_description":

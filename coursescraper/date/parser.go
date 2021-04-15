@@ -1,4 +1,5 @@
-package dateparser
+// Package date provides functions
+package date
 
 import (
 	"errors"

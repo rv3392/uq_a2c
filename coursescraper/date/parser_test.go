@@ -1,4 +1,4 @@
-package dateparser
+package date
 
 import (
 	"testing"
