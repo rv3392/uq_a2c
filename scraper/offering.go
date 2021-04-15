@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -58,4 +59,8 @@ func getCourseOfferings(courseCode string) map[offering]string {
 	c.Visit(getCourseOfferingsPageURL(courseCode))
 
 	return offerings
+}
+
+func (o *offering) toString() string {
+	return fmt.Sprintf("%s, %s, %s", o.semester, o.location, o.mode)
 }
