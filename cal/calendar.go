@@ -1,14 +1,14 @@
 package calendar
 
 import (
-	"uq_a2c/coursescraper"
+	"uq_a2c/scraper"
 
 	goics "github.com/jordic/goics"
 )
 
 // CreateAssessmentsCal creates an ics file with the given assessmentsToSave slice
 // and returns a pointer to an ics.Calendar type.
-func CreateAssessmentsCal(assessments []coursescraper.Assessment) *goics.Component {
+func CreateAssessmentsCal(assessments []scraper.Assessment) *goics.Component {
 	cal := createEmptyAssessmentsCal()
 
 	for _, assessment := range assessments {
@@ -28,7 +28,7 @@ func createEmptyAssessmentsCal() *goics.Component {
 	return cal
 }
 
-func createAssessmentTodo(cal *goics.Component, assessment *coursescraper.Assessment) *goics.Component {
+func createAssessmentTodo(cal *goics.Component, assessment *scraper.Assessment) *goics.Component {
 	// Create a new assessment todo with the detaisl specified in the assessment struct
 	todo := goics.NewComponent()
 	todo.SetType("VTODO")

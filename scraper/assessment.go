@@ -1,6 +1,6 @@
-// Package coursescraper provides methods to scrape course profiles and return
+// Package scraper provides methods to scrape course profiles and return
 // data.
-package coursescraper
+package scraper
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
 
-	"uq_a2c/coursescraper/date"
+	"uq_a2c/scraper/date"
 )
 
 const courseOfferingsPage = "https://my.uq.edu.au/programs-courses/course.html?course_code="
@@ -100,9 +100,7 @@ func getAssessments(assessmentSectionURL string) []Assessment {
 
 	fmt.Fprintf(os.Stderr, "\n\033[1mFound the following assessments: \033[0m\n")
 	for _, assessment := range assessments {
-		fmt.Printf("Task: %s\nType: %s\nDate: %s\nDescription: %s\n\n",
-			assessment.Name, assessment.Format, assessment.DueDate,
-			assessment.Description)
+		assessment.ToString()
 	}
 
 	return assessments
@@ -111,7 +109,7 @@ func getAssessments(assessmentSectionURL string) []Assessment {
 func displayOfferingsLogging(courseCode string, offerings map[offering]string) {
 	fmt.Printf("Offerings of %s: \n", courseCode)
 	for k, v := range offerings {
-		fmt.Fprintf(os.Stdout, "%s, %s, %s : %s\n", k.semester, k.location, k.mode, v)
+		fmt.Fprintf(os.Stdout, "%s : %s\n", k.toString(), v)
 	}
 	fmt.Printf("\n")
 }
@@ -128,4 +126,9 @@ func ScrapeAssessments(courseCode string, semester string, location string, mode
 	assessmentSectionURL := strings.Replace(ecpURL, "section_1", "section_5", 1)
 
 	return getAssessments(assessmentSectionURL)
+}
+
+func (a *Assessment) ToString() string {
+	return fmt.Sprintf("Task: %s\nType: %s\nDate: %s\nDescription: %s\n\n",
+		a.Name, a.Format, a.DueDate.ToString(), a.Description)
 }

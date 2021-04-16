@@ -37,6 +37,10 @@ func ParseString(dateToParse string) *AssessmentDate {
 	return matchDates(dateToParse)
 }
 
+func (d * AssessmentDate) ToString() string {
+	return ""
+}
+
 func NewAssessmentDate(t AssessmentDateType, children []*AssessmentDate) *AssessmentDate {
 	return &AssessmentDate{DateType: t, ChildDates: children}
 }

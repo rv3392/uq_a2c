@@ -5,7 +5,7 @@ import (
 	"os"
 
 	calendar "uq_a2c/cal"
-	coursescraper "uq_a2c/coursescraper"
+	coursescraper "uq_a2c/scraper"
 )
 
 const currentSemester = "Semester 1, 2021"
