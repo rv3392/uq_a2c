@@ -99,8 +99,8 @@ func getAssessments(assessmentSectionURL string) []Assessment {
 	c.Visit(assessmentSectionURL)
 
 	fmt.Fprintf(os.Stderr, "\n\033[1mFound the following assessments: \033[0m\n")
-	for _, assessment := range assessments {
-		assessment.ToString()
+	for _, a := range assessments {
+		fmt.Print(a.ToString())
 	}
 
 	return assessments
