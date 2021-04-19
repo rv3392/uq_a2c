@@ -3,6 +3,7 @@
 package scraper
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -26,8 +27,12 @@ type Assessment struct {
 
 type parameterMap map[string]string
 
-func parameterMapToAssessment(parameterValuePairs parameterMap) Assessment {
-	a := Assessment{}
+func parameterMapToAssessment(parameterValuePairs parameterMap) (Assessment, error) {
+	if _, ok := parameterValuePairs["due_date"]; !ok {
+		return Assessment{}, errors.New("assessment requires a date to be valid")
+	}
+
+	a := Assessment{name: "", format: "", weight: "", description: ""}
 	for parameter, value := range parameterValuePairs {
 		switch parameter {
 		case "name":
@@ -45,10 +50,10 @@ func parameterMapToAssessment(parameterValuePairs parameterMap) Assessment {
 		}
 	}
 
-	return a
+	return a, nil
 }
 
-func parseHTMLToAssessment(assessmentHTML string) Assessment {
+func parseHTMLToAssessment(assessmentHTML string) (Assessment, error) {
 	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(assessmentHTML))
 
 	details := make(parameterMap)
@@ -70,7 +75,12 @@ func parseHTMLToAssessment(assessmentHTML string) Assessment {
 
 	fmt.Fprintf(os.Stderr, "\033[2D Finished!\n")
 
-	return parameterMapToAssessment(details)
+	a, err := parameterMapToAssessment(details)
+	if err != nil {
+		return Assessment{}, err
+	}
+
+	return a, nil
 }
 
 func initAssessmentCollector(assessments *[]Assessment) colly.Collector {
@@ -82,7 +92,11 @@ func initAssessmentCollector(assessments *[]Assessment) colly.Collector {
 
 		assessmentDetails := strings.Split(assessmentDetailsHTML, "<hr/>")
 		for _, assessment := range assessmentDetails {
-			tempAssessments := append(*assessments, parseHTMLToAssessment(assessment))
+			a, err := parseHTMLToAssessment(assessment)
+			if err != nil {
+				continue
+			}
+			tempAssessments := append(*assessments, a)
 			*assessments = tempAssessments
 		}
 
@@ -93,7 +107,7 @@ func initAssessmentCollector(assessments *[]Assessment) colly.Collector {
 }
 
 func getAssessments(assessmentSectionURL string) []Assessment {
-	assessments := make([]Assessment, 1)
+	assessments := make([]Assessment, 0)
 
 	c := initAssessmentCollector(&assessments)
 	c.Visit(assessmentSectionURL)
