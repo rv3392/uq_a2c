@@ -32,7 +32,7 @@ func parameterMapToAssessment(parameterValuePairs parameterMap) (Assessment, err
 		return Assessment{}, errors.New("assessment requires a date to be valid")
 	}
 
-	a := Assessment{name: "", format: "", weight: "", description: ""}
+	a := Assessment{Name: "", Format: "", Weight: "", Description: ""}
 	for parameter, value := range parameterValuePairs {
 		switch parameter {
 		case "name":

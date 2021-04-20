@@ -74,13 +74,13 @@ func TestCreateAssessmentsCal_GivenSingleDateType_CorrectValues(t *testing.T) {
 
 		if calComp.Properties["DTSTART"] != testAssessments[i].DueDate.ToString() {
 			t.Errorf("Component " + strconv.Itoa(i) + " of type " + calComp.Tipo +
-				" had the incorrect DUE property:\nExpected: " + testAssessments[i].DueDate.ToString() +
+				" had the incorrect DTSTART property:\nExpected: " + testAssessments[i].DueDate.ToString() +
 				"\nWas: " + calComp.Properties["DTSTART"])
 		}
 
 		if calComp.Properties["DTEND"] != testAssessments[i].DueDate.ToString() {
 			t.Errorf("Component " + strconv.Itoa(i) + " of type " + calComp.Tipo +
-				" had the incorrect DUE property:\nExpected: " + testAssessments[i].DueDate.ToString() +
+				" had the incorrect DTEND property:\nExpected: " + testAssessments[i].DueDate.ToString() +
 				"\nWas: " + calComp.Properties["DTEND"])
 		}
 	}
@@ -156,13 +156,13 @@ func TestCreateAssessmentsCal_GivenRangeDateType_CorrectValues(t *testing.T) {
 
 		if calComp.Properties["DTSTART"] != testAssessments[i].DueDate.ChildDates[0].ToString() {
 			t.Errorf("Component " + strconv.Itoa(i) + " of type " + calComp.Tipo +
-				" had the incorrect DUE property:\nExpected: " + testAssessments[i].DueDate.ToString() +
+				" had the incorrect DTSTART property:\nExpected: " + testAssessments[i].DueDate.ChildDates[0].ToString() +
 				"\nWas: " + calComp.Properties["DTSTART"])
 		}
 
-		if calComp.Properties["DTEND"] != testAssessments[i].DueDate.ChildDates[0].ToString() {
+		if calComp.Properties["DTEND"] != testAssessments[i].DueDate.ChildDates[1].ToString() {
 			t.Errorf("Component " + strconv.Itoa(i) + " of type " + calComp.Tipo +
-				" had the incorrect DUE property:\nExpected: " + testAssessments[i].DueDate.ToString() +
+				" had the incorrect DTEND property:\nExpected: " + testAssessments[i].DueDate.ChildDates[1].ToString() +
 				"\nWas: " + calComp.Properties["DTEND"])
 		}
 	}

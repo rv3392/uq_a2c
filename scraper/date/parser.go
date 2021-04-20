@@ -37,8 +37,26 @@ func ParseString(dateToParse string) *AssessmentDate {
 	return matchDates(dateToParse)
 }
 
-func (d * AssessmentDate) ToString() string {
-	return ""
+func (d *AssessmentDate) ToString() string {
+	retStr := ""
+	switch d.DateType {
+	case SingleDateType:
+		retStr = d.GetDateValue().Format("20060102T150405Z")
+	case RangeDateType:
+		start := d.ChildDates[0].ToString()
+		end := d.ChildDates[1].ToString()
+		retStr = start + " - " + end
+	case MultiDateType:
+		for _, child := range d.ChildDates {
+			retStr += child.ToString()
+			retStr += ", "
+		}
+		retStr = retStr[:len(retStr) - 2]
+
+	default:
+	}
+
+	return retStr
 }
 
 func NewAssessmentDate(t AssessmentDateType, children []*AssessmentDate) *AssessmentDate {
@@ -74,7 +92,7 @@ func matchDates(dateToParse string) *AssessmentDate {
 	}
 
 	thisDate = NewAssessmentDate(dateType, make([]*AssessmentDate, 0))
-	res, _ := matchDate(dateToParse)
+	res, _ := matchDate(splitDate[0])
 
 	thisDate.SetDateValue(res)
 	return thisDate
