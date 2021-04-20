@@ -5,11 +5,10 @@ package scraper
 import (
 	"errors"
 	"fmt"
-	"os"
-	"strings"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
+	"os"
+	"strings"
 
 	"uq_a2c/scraper/date"
 )
@@ -53,6 +52,25 @@ func parameterMapToAssessment(parameterValuePairs parameterMap) (Assessment, err
 	return a, nil
 }
 
+func removeWhitespace(s string) string {
+	return strings.Join(strings.Fields(strings.TrimSpace(s)), " ")
+}
+
+func cleanDetailValueHTML(detHTML *goquery.Document) string {
+	var retStr = ""
+	retStr = strings.Replace(detHTML.Text(), detHTML.Find("strong").First().Text(), "", -1)
+	return removeWhitespace(retStr)
+}
+
+func cleanDetailParamHTML(parHTML *goquery.Document) string {
+	var retStr = ""
+	retStr = strings.TrimSpace(parHTML.Find("strong").First().Text())
+	retStr = strings.ToLower(retStr)
+	retStr = strings.Replace(retStr, " ", "_", -1)
+	retStr = strings.Replace(retStr, ":", "", -1)
+	return removeWhitespace(retStr)
+}
+
 func parseHTMLToAssessment(assessmentHTML string) (Assessment, error) {
 	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(assessmentHTML))
 
@@ -64,11 +82,8 @@ func parseHTMLToAssessment(assessmentHTML string) (Assessment, error) {
 	for _, line := range strings.Split(assessmentHTML, "<strong>") {
 		fullyFormedLine := "<strong>" + line
 		parameterDoc, _ := goquery.NewDocumentFromReader(strings.NewReader(fullyFormedLine))
-		parameter := strings.Replace(strings.Replace(strings.ToLower(strings.TrimSpace(
-			parameterDoc.Find("strong").First().Text())), " ", "_", -1), ":", "", -1)
-		value := strings.Replace(strings.Replace(strings.Replace(strings.Replace(
-			parameterDoc.Text(), parameterDoc.Find("strong").First().Text(), "", -1),
-			"\n", "", -1), "\r", "", -1), "  ", "", -1)
+		parameter := cleanDetailParamHTML(parameterDoc)
+		value := cleanDetailValueHTML(parameterDoc)
 
 		details[parameter] = value
 	}

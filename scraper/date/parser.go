@@ -33,6 +33,9 @@ const (
 	RangeDateType  AssessmentDateType = iota
 )
 
+// ErrTime is the unix timestamp representing 1/1/0 00:00:00 and is used to represent an error
+const ErrTime = -62167255200
+
 func ParseString(dateToParse string) *AssessmentDate {
 	return matchDates(dateToParse)
 }
@@ -124,14 +127,14 @@ func splitDateStr(toSplit string) (AssessmentDateType, []string) {
 
 func matchDate(dateToParse string) (time.Time, bool) {
 	if dateToParse == "" {
-		return time.Now(), false
+		return time.Unix(ErrTime, 0), false
 	}
 
-	res, err := dateparse.ParseLocal(dateToParse, dateparse.PreferMonthFirst(false))
+	tz, _ := time.LoadLocation("Australia/Brisbane")
+	res, err := dateparse.ParseIn(dateToParse, tz, dateparse.PreferMonthFirst(false))
 	if err != nil {
-		return time.Now(), false
+		return time.Unix(ErrTime, 0), false
 	}
 
-	fmt.Print(res.String())
 	return res, true
 }
